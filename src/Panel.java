@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -42,9 +43,11 @@ public class Panel extends JPanel{
 	
 	private class solveListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
+			System.out.println(LocalDateTime.now());
 			Integer [][] solution = SudokuSolver.solve(grid);
 			showPuzzle(solution);
 			grid = solution;
+			System.out.println(LocalDateTime.now());
 		}
 	}
 	
