@@ -3,6 +3,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.swing.*;
 
@@ -42,17 +43,21 @@ public class Panel extends JPanel{
 	
 	private class solveListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-            // print start time
-            System.out.println(LocalDateTime.now());
+            // print and save the start time
+			Date startTime = new Date();
+			System.out.println("Started at " + startTime);
 			Integer [][] solution = SudokuSolver.solve(grid);
 			showPuzzle(solution);
 			grid = solution;
-            // print end time
-            System.out.println(LocalDateTime.now());
-            if (solution[0][0] == null) // Infeasible sudoku
-                JOptionPane.showMessageDialog(null, "This sudoku is not feasible.");
-            else // Feasible sudoku
-                JOptionPane.showMessageDialog(null, "Done!");
+            // print and save end time
+			Date endTime = new Date();
+			System.out.println("Ended at " + endTime);
+			// Get the time difference
+			System.out.println("(Took " + (endTime.getTime() - startTime.getTime()) / 1000 + " seconds.)");
+			if (solution[0][0] == null)// Infeasible sudoku (Refer to SudokuSolver.java.27)
+				JOptionPane.showMessageDialog(null, "This sudoku is not feasible. (Took " + (endTime.getTime() - startTime.getTime()) / 1000 + " seconds.)");
+			else // Feasible sudoku
+				JOptionPane.showMessageDialog(null, "Done! (Took " + (endTime.getTime() - startTime.getTime()) / 1000 + " seconds.)");
 		}
 	}
 	
