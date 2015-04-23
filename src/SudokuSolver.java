@@ -83,7 +83,7 @@ public class SudokuSolver {
 	}
 		
 	static boolean isValid(Integer[][] grid) {
-        return checkHorizontals(grid) && checkVerticals(grid) && checkSquares(grid));
+        return checkHorizontals(grid) && checkVerticals(grid) && checkSquares(grid);
 	}
 	
 	static ArrayList<Integer[][]> generatePossibilities(ArrayList<Integer[][]> current, int row, int col) {
@@ -111,6 +111,8 @@ public class SudokuSolver {
 	public static void main(String[] args) throws FileNotFoundException {
 		// TODO Auto-generated method stub
         // TODO: Might change depending on the dimensions of the sukodu
+		// If we were to change this, we should ask the width/length of the small square (3 for a regular sudoku).
+		// That way, we don't have to take square roots
         Integer[][] grid = new Integer[9][9];
 		Scanner fileScanner = new Scanner(new File("default.txt"));
         //Scanner fileScanner = new Scanner(new File("answer.txt"));
