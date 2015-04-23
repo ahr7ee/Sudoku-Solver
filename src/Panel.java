@@ -4,9 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 
 @SuppressWarnings("serial")
@@ -14,6 +12,7 @@ public class Panel extends JPanel{
 	private JButton solve, generateRegular, generateSamurai;
 	private JPanel gridSpace;
 	private Integer[][] grid;
+
 	public Panel(Integer[][] grid) {
 		setLayout(new BorderLayout());
 		this.grid = grid;
@@ -43,11 +42,17 @@ public class Panel extends JPanel{
 	
 	private class solveListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			System.out.println(LocalDateTime.now());
+            // print start time
+            System.out.println(LocalDateTime.now());
 			Integer [][] solution = SudokuSolver.solve(grid);
 			showPuzzle(solution);
 			grid = solution;
-			System.out.println(LocalDateTime.now());
+            // print end time
+            System.out.println(LocalDateTime.now());
+            if (solution[0][0] == null) // Infeasible sudoku
+                JOptionPane.showMessageDialog(null, "This sudoku is not feasible.");
+            else // Feasible sudoku
+                JOptionPane.showMessageDialog(null, "Done!");
 		}
 	}
 	

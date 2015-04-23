@@ -17,13 +17,20 @@ public class SudokuSolver {
 	public static Integer[][] solve(Integer[][] grid) {
 		ArrayList<Integer[][]> possibilities = new ArrayList<Integer[][]>();
 		possibilities.add(grid);
+        // TODO: Might change depending on the dimensions of the sukodu
 		for (int i = 0; i < 9; i++)
 			for (int j = 0; j < 9; j++)
-				possibilities = generatePossibilities(possibilities, i, j);
-		return possibilities.get(0);
+                if (!possibilities.isEmpty())
+                    possibilities = generatePossibilities(possibilities, i, j);
+        // If there is no solution or the given full sudoku is invalid
+        if (possibilities.isEmpty() || !isValid(possibilities.get(0)))
+            return new Integer[grid.length][grid.length];
+        else
+            return possibilities.get(0);
 	}
 	
 	static Integer[][] getSquare(Integer[][] grid, int i, int j) {
+        // TODO: Might change depending on the dimensions of the sukodu
 		Integer[][] square = new Integer[3][3];
 		for (int x = i; x < i + 3; x++)
 			for (int y = j; y < j + 3; y++)
@@ -43,6 +50,7 @@ public class SudokuSolver {
 	}
 	
 	static boolean checkSquares(Integer[][] grid) {
+        // TODO: Might change depending on the dimensions of the sukodu
 		for (int i = 0; i < grid.length; i += 3)
 			for (int j = 0; j < grid.length; j += 3)
 				if (!checkSquare(getSquare(grid, i, j)))
@@ -75,9 +83,7 @@ public class SudokuSolver {
 	}
 		
 	static boolean isValid(Integer[][] grid) {
-		if (!checkHorizontals(grid) || !checkVerticals(grid) || !checkSquares(grid))
-			return false;
-		return true;
+        return checkHorizontals(grid) && checkVerticals(grid) && checkSquares(grid));
 	}
 	
 	static ArrayList<Integer[][]> generatePossibilities(ArrayList<Integer[][]> current, int row, int col) {
@@ -88,6 +94,8 @@ public class SudokuSolver {
 		while (iter.hasNext()) {
 			Integer[][] grid = iter.next();
 			iter.remove();
+            // TODO: Might change depending on the dimensions of the sukodu
+            // TODO: This outer for-loop have to replace with a markup later
 			for (int k = 1; k <= 9; k++) {
 				Integer[][] clone = new Integer[9][9];
 				for (int i = 0; i < grid.length; i++)
@@ -102,15 +110,18 @@ public class SudokuSolver {
 	}
 	public static void main(String[] args) throws FileNotFoundException {
 		// TODO Auto-generated method stub
-		Integer[][] grid = new Integer[9][9];
+        // TODO: Might change depending on the dimensions of the sukodu
+        Integer[][] grid = new Integer[9][9];
 		Scanner fileScanner = new Scanner(new File("default.txt"));
-		int i = 0;
+        //Scanner fileScanner = new Scanner(new File("answer.txt"));
+        int i = 0;
 		while (fileScanner.hasNextLine()) {
 			String line = fileScanner.nextLine();
 			if (line.length() == 0)
 				continue;
 			String[] data = line.split("   ");
-			for (int j = 0; j < 3; j++) {
+            // TODO: Might change depending on the dimensions of the sukodu
+            for (int j = 0; j < 3; j++) {
 				grid[i][3 * j] = Character.getNumericValue(data[j].charAt(0));
 				grid[i][3 * j + 1] = Character.getNumericValue(data[j].charAt(2));
 				grid[i][3 * j + 2] = Character.getNumericValue(data[j].charAt(4));
