@@ -2,53 +2,87 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Date;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 
 @SuppressWarnings("serial")
 public class Panel extends JPanel {
-    private JButton solve, generateRegular, generateSamurai;
-    private JPanel gridSpace;
+    private JButton solve, resize;
+    private JPanel gridSpace, buttonSpace;
     private int[][] grid;
-
+    private int length; // Total length of grid
+    private ArrayList<JTextField> textBoxes;
+    
     public Panel(int[][] grid) {
         setLayout(new BorderLayout());
         this.grid = grid;
+        textBoxes = new ArrayList<JTextField>();
+        length = 9;
         solve = new JButton("Solve Puzzle");
         solve.addActionListener(new solveListener());
-        generateRegular = new JButton("Generate Sudoku Puzzle");
+        resize = new JButton("Change Length");
+        resize.addActionListener(new resizeListener());
+        /*generateRegular = new JButton("Generate Sudoku Puzzle");
         generateRegular.addActionListener(new generateRegularListener());
         generateSamurai = new JButton("Generate Samurai Sudoku Puzzle");
-        generateSamurai.addActionListener(new generateSamuraiListener());
+        generateSamurai.addActionListener(new generateSamuraiListener());*/
         gridSpace = new JPanel();
         gridSpace.setLayout(new GridLayout(grid.length, grid.length));
+        buttonSpace = new JPanel();
+        buttonSpace.setLayout(new GridLayout(1, 2));
+        buttonSpace.add(solve);
+        buttonSpace.add(resize);
         showPuzzle(grid);
         add(gridSpace);
-        add(solve, BorderLayout.SOUTH);
+        add(buttonSpace, BorderLayout.SOUTH);
         //add(generateRegular, BorderLayout.SOUTH);
         //add(generateSamurai, BorderLayout.SOUTH);
     }
 
     public void showPuzzle(int[][] puzzle) {
         gridSpace.removeAll();
-        for (int i = 0; i < puzzle.length; i++)
-            for (int j = 0; j < puzzle.length; j++) {
+        for (int i = 0; i < length; i++)
+            for (int j = 0; j < length; j++) {
             	String text = "";
             	if (puzzle[i][j] != 0)
             		text += puzzle[i][j];
-                gridSpace.add(new JTextField(text));
+            	JTextField tf = new JTextField(text);
+            	textBoxes.add(tf);
+                gridSpace.add(tf);
             }
         revalidate();
         repaint();
     }
 
+    public int getValueAt(int i, int j) {
+    	if (i * length + j >= textBoxes.size())
+    		return 0;
+    	String str = textBoxes.get(i * length + j).getText();
+    	if (str.equals(""))
+    		return 0;
+    	return Integer.parseInt(str);
+    }
+    
+    public void updateGrid() {
+    	grid = new int[length][length];
+    	for (int i = 0; i < length; i++)
+    		for (int j = 0; j < length; j++)
+    			grid[i][j] = getValueAt(i, j);
+    	return;
+    }
+    
     private class solveListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             // print and save the start time
             Date startTime = new Date();
             System.out.println("Started at " + startTime);
+            updateGrid();
             int[][] solution = SudokuSolver.solve(grid);
             showPuzzle(solution);
             grid = solution;
@@ -64,15 +98,18 @@ public class Panel extends JPanel {
         }
     }
 
-    private class generateRegularListener implements ActionListener {
+    private class resizeListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-
+        	length = Integer.parseInt(JOptionPane.showInputDialog("Enter new edge length for the grid"));
+        	gridSpace.setLayout(new GridLayout(length, length));
+        	updateGrid();
+        	showPuzzle(grid);
         }
     }
 
-    private class generateSamuraiListener implements ActionListener {
+    /*private class generateSamuraiListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
 
         }
-    }
+    }*/
 }
