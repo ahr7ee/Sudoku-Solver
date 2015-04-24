@@ -34,8 +34,12 @@ public class Panel extends JPanel {
     public void showPuzzle(int[][] puzzle) {
         gridSpace.removeAll();
         for (int i = 0; i < puzzle.length; i++)
-            for (int j = 0; j < puzzle.length; j++)
-                gridSpace.add(new JLabel(puzzle[i][j] + ""));
+            for (int j = 0; j < puzzle.length; j++) {
+            	String text = "";
+            	if (puzzle[i][j] != 0)
+            		text += puzzle[i][j];
+                gridSpace.add(new JTextField(text));
+            }
         revalidate();
         repaint();
     }
