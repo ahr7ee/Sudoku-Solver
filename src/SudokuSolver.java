@@ -34,8 +34,9 @@ public class SudokuSolver {
 	static int[][] getSquare(int[][] grid, int i, int j) {
         // TODO: Might change depending on the dimensions of the sukodu
 		int[][] square = new int[3][3];
-		for (int x = i; x < i + 3; x++)
-			for (int y = j; y < j + 3; y++)
+		int sideLength = square.length;
+		for (int x = i; x < i + sideLength; x++)
+			for (int y = j; y < j + sideLength; y++)
 				square[x - i][y - j] = grid[x][y];
 		return square;
 	}
@@ -149,4 +150,3 @@ public class SudokuSolver {
 		fileScanner.close();
 	}
 }
-
