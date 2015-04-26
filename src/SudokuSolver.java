@@ -30,7 +30,6 @@ public class SudokuSolver {
         possibilities.add(grid);
         // TODO: markup code
         // int[][][] listOfMarkups = new int[grid.length][grid.length][grid.length];
-        // TODO: Might change depending on the dimensions of the sukodu
         for (int i = 0; i < grid.length; i++)
             for (int j = 0; j < grid.length; j++)
                 if (!possibilities.isEmpty())
@@ -73,34 +72,52 @@ public class SudokuSolver {
         return true;
     }
 
-    // TODO: Maybe we should use listOfMarkups for this
     static boolean checkHorizontals(int[][] grid) {
         for (int i = 0; i < grid.length; i++) {
-            ArrayList<Integer> list = new ArrayList<Integer>();
-            for (int j = 0; j < grid.length; j++) {
-                if (grid[i][j] != 0 && list.contains(new Integer(grid[i][j])))
-                    return false;
-                list.add(grid[i][j]);
-            }
+            // False if a row is not valid
+            if (!checkOneRow(grid, i))
+                return false;
         }
         return true;
     }
 
     // TODO: Maybe we should use listOfMarkups for this
+    static boolean checkOneColumn(int[][] grid, int col) {
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        for (int i = 0; i < grid.length; i++) {
+            if (grid[i][col] != 0 && list.contains(new Integer(grid[i][col])))
+                return false;
+            list.add(grid[i][col]);
+        }
+        return true;
+    }
+
     static boolean checkVerticals(int[][] grid) {
+        for (int j = 0; j < grid.length; j++)
+            // False if a column is not valid
+            if (!checkOneColumn(grid, j))
+                return false;
+        return true;
+    }
+
+    // TODO: Maybe we should use listOfMarkups for this
+    static boolean checkOneRow(int[][] grid, int row) {
+        ArrayList<Integer> list = new ArrayList<Integer>();
         for (int j = 0; j < grid.length; j++) {
-            ArrayList<Integer> list = new ArrayList<Integer>();
-            for (int i = 0; i < grid.length; i++) {
-                if (grid[i][j] != 0 && list.contains(new Integer(grid[i][j])))
-                    return false;
-                list.add(grid[i][j]);
-            }
+            if (grid[row][j] != 0 && list.contains(new Integer(grid[row][j])))
+                return false;
+            list.add(grid[row][j]);
         }
         return true;
     }
 
     static boolean isValid(int[][] grid) {
         return checkHorizontals(grid) && checkVerticals(grid) && checkSquares(grid);
+    }
+
+    // Check the validity of only the cells that are influenced by a change in this cell
+    static boolean isPartiallyValid(int[][] grid, int row, int col) {
+        return checkOneRow(grid, row) && checkOneColumn(grid, col) && checkSquare(getSquare(grid, 3 * (row / 3), 3 * (col / 3)));
     }
 
     static ArrayList<int[][]> generatePossibilities(ArrayList<int[][]> current, int row, int col, int n) {
@@ -124,7 +141,7 @@ public class SudokuSolver {
                 // Change only one entry
                 clone[row][col] = k;
                 // Add to "next" only if it's valid
-                if (isValid(clone))
+                if (isPartiallyValid(clone, row, col))
                     next.add(clone);
             }
         }
@@ -146,9 +163,9 @@ public class SudokuSolver {
         System.out.println("Now look at the pop-up!");
         keyboard.close();
         int[][] grid = new int[square][square];
-        //Scanner fileScanner = new Scanner(new File("default.txt"));
+        Scanner fileScanner = new Scanner(new File("default.txt"));
         //Scanner fileScanner = new Scanner(new File("answer.txt"));
-        Scanner fileScanner = new Scanner(new File("16x16_1q.txt"));
+        //Scanner fileScanner = new Scanner(new File("16x16_1q.txt"));
         int i = 0;
         while (fileScanner.hasNextLine()) {
             String line = fileScanner.nextLine();
