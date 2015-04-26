@@ -13,7 +13,7 @@ import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
 public class Panel extends JPanel {
-    private JButton solve, resize;
+    private JButton solve;
     private JPanel gridSpace, buttonSpace;
     private int[][] grid;
     private int length; // Total length of grid
@@ -26,18 +26,18 @@ public class Panel extends JPanel {
         length = 9;
         solve = new JButton("Solve Puzzle");
         solve.addActionListener(new solveListener());
-        resize = new JButton("Change Length");
+        /*resize = new JButton("Change Length");
         resize.addActionListener(new resizeListener());
-        /*generateRegular = new JButton("Generate Sudoku Puzzle");
+        generateRegular = new JButton("Generate Sudoku Puzzle");
         generateRegular.addActionListener(new generateRegularListener());
         generateSamurai = new JButton("Generate Samurai Sudoku Puzzle");
         generateSamurai.addActionListener(new generateSamuraiListener());*/
         gridSpace = new JPanel();
         gridSpace.setLayout(new GridLayout(grid.length, grid.length));
         buttonSpace = new JPanel();
-        buttonSpace.setLayout(new GridLayout(1, 2));
+        buttonSpace.setLayout(new GridLayout(1, 1));
         buttonSpace.add(solve);
-        buttonSpace.add(resize);
+        //buttonSpace.add(resize);
         showPuzzle(grid);
         add(gridSpace);
         add(buttonSpace, BorderLayout.SOUTH);
@@ -70,7 +70,6 @@ public class Panel extends JPanel {
     }
     
     public void updateGrid() {
-    	grid = new int[length][length];
     	for (int i = 0; i < length; i++)
     		for (int j = 0; j < length; j++)
     			grid[i][j] = getValueAt(i, j);
@@ -98,14 +97,14 @@ public class Panel extends JPanel {
         }
     }
 
-    private class resizeListener implements ActionListener {
+    /*private class resizeListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
         	length = Integer.parseInt(JOptionPane.showInputDialog("Enter new edge length for the grid"));
         	gridSpace.setLayout(new GridLayout(length, length));
         	updateGrid();
         	showPuzzle(grid);
         }
-    }
+    }*/
 
     /*private class generateSamuraiListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
