@@ -23,7 +23,7 @@ public class Panel extends JPanel {
         setLayout(new BorderLayout());
         this.grid = grid;
         textBoxes = new ArrayList<JTextField>();
-        length = 9;
+        length = grid.length;
         solve = new JButton("Solve Puzzle");
         solve.addActionListener(new solveListener());
         /*resize = new JButton("Change Length");
