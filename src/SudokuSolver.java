@@ -24,6 +24,14 @@ public class SudokuSolver {
         } while (true);
         return m;
     }
+    
+    public static void printGrid(int[][] grid) {
+    	for (int i = 0; i < grid.length; i++) {
+    		for (int j = 0; j < grid.length; j++)
+    			System.out.print(grid[i][j] + " ");
+        	System.out.println();
+    	}
+    }
 
     public static int[][] solve(int[][] grid) {
         ArrayList<int[][]> possibilities = new ArrayList<int[][]>();
@@ -141,8 +149,10 @@ public class SudokuSolver {
                 // Change only one entry
                 clone[row][col] = k;
                 // Add to "next" only if it's valid
-                if (isPartiallyValid(clone, row, col))
+                if (isPartiallyValid(clone, row, col)) {
+                	//printGrid(clone);
                     next.add(clone);
+                }
             }
         }
         return next;
@@ -160,10 +170,14 @@ public class SudokuSolver {
             if (square == squareRoot * squareRoot)
                 break;
         } while (keyboard.hasNextInt());
+        String fileName = "";
+        System.out.print("Enter a file name: ");
+        fileName = keyboard.next();
         System.out.println("Now look at the pop-up!");
         keyboard.close();
         int[][] grid = new int[square][square];
-        Scanner fileScanner = new Scanner(new File("default.txt"));
+        //Scanner fileScanner = new Scanner(new File("default.txt"));
+        Scanner fileScanner = new Scanner(new File(fileName));
         //Scanner fileScanner = new Scanner(new File("answer.txt"));
         //Scanner fileScanner = new Scanner(new File("16x16_1q.txt"));
         int i = 0;
